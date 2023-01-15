@@ -6,8 +6,8 @@ safe_seed2 = [6; 25];
 % safe_seed1 = [10; 15; 7];
 % safe_seed2 = [2; 12; 20];
 
-ref_signal = Step_reference_generator();
-% ref_signal = load('ref_signal_current.mat').ref_signal;
+% ref_signal = Step_reference_generator();
+ref_signal = load('ref_signal_current.mat').ref_signal;
 
 gprMdlLP_machine1 = fitrgp(safe_seed1, Calc_current1(safe_seed1));
 gprMdlLP_machine2 = fitrgp(safe_seed2, Calc_current2(safe_seed2));
@@ -29,6 +29,9 @@ means_machine2 = [];
 sigmas_machine1 = [];
 sigmas_machine2 = [];
 
+avg_regret_one = [];
+avg_regret_two = [];
+
 for i = 1:length(ref_signal)
 
     x = [0:38]';
@@ -41,22 +44,22 @@ for i = 1:length(ref_signal)
     sigmas_machine1 = [sigmas_machine1;sigma_machine1];
     sigmas_machine2 = [sigmas_machine1];sigma_machine2;
 
-    if i < 5
-
-        % m1
-        f = figure;
-        plot(x, mean_machine1);
-        hold
-        plot(x, Calc_current1(x));
-        legend("Predict M1", "Real M1");
-
-        % m2
-        f = figure;
-        plot(x, mean_machine2);
-        hold
-        plot(x, Calc_current2(x));
-        legend("Predict M2", "Real M2");
-    end
+%     if i < 5
+% 
+%         % m1
+%         f = figure;
+%         plot(x, mean_machine1);
+%         hold
+%         plot(x, Calc_current1(x));
+%         legend("Predict M1", "Real M1");
+% 
+%         % m2
+%         f = figure;
+%         plot(x, mean_machine2);
+%         hold
+%         plot(x, Calc_current2(x));
+%         legend("Predict M2", "Real M2");
+%     end
     
     if i > 1 && ref_signal(i-1) - real_current_one - real_current_two < 5 &&ref_signal(i) == ref_signal(i-1) &&(abs(prev_torque_one(end,1) - prev_torque_one(end-1,1)) < 0.5) && abs(prev_torque_two(end,1) - prev_torque_two(end-1,1)) < 0.5
         exp = true;
@@ -86,6 +89,9 @@ for i = 1:length(ref_signal)
 
     predicted_one = [predicted_one;mean_machine1];
     predicted_two = [predicted_two;mean_machine2];
+
+    avg_regret_one = [avg_regret_one; mean(abs(real_current_one-mean_machine1))];
+    avg_regret_two = [avg_regret_two; mean(abs(real_current_two-mean_machine2))];
     
     if abs(prev_torque_one(end,1) - prev_torque_one(end-1,1)) > 0.5
         gprMdlLP_machine1 = fitrgp(prev_torque_one, prev_current_one);
@@ -128,19 +134,35 @@ xlim([1 length(ref_signal)])
 legend("Predicted", "Real", "Max")
 % saveas(gcf, "pred_vs_real.png")
 
-% total unc comparison
+% regret comparison
 figure;
 set(0,'DefaultLineLineWidth',2)
-xlim([1 length(ref_signal)])
-stairs([1:length(ref_signal)]', total_unc_5, LineWidth=2);
+plot([1:25]', normalize(avg_regret_one_z0(1:25)), LineWidth=2);
 hold
-stairs([1:length(ref_signal)]', total_unc_z10, LineWidth=2);
-stairs([1:length(ref_signal)]', total_unc_25, LineWidth=2);
-stairs([1:length(ref_signal)]', total_unc_50, LineWidth=2)
-stairs([1:length(ref_signal)]', total_unc_100, LineWidth=2)
-xlim([1 length(ref_signal)])
-xlabel("Time")
-ylabel("Total uncertainty")
+plot([1:25]', normalize(avg_regret_one_z10(1:25)),  LineWidth=2)
+% stairs([1:length(ref_signal)]', avg_regret_one_z25,  LineWidth=2)
+plot([1:25]', normalize(avg_regret_one_z25(1:25)),  LineWidth=2)
+% stairs([1:length(ref_signal)]', avg_regret_one_z50,  LineWidth=2)
+plot([1:25]', normalize(avg_regret_one_z50(1:25)),  LineWidth=2)
+% stairs([1:length(ref_signal)]', avg_regret_one_z100,  LineWidth=2)
+plot([1:25]', avg_regret_one_z100(1:25),  LineWidth=2)
+xlim([1 25])
+legend("Machine2-regret (z=0)","Machine2-regret (z=10)", "Machine2-regret (z=25)", "Machine2-regret (z=50)", "Machine2-regret (z=100)")
+
+
+% total unc comparison
+% figure;
+% set(0,'DefaultLineLineWidth',2)
+% xlim([1 length(ref_signal)])
+% stairs([1:length(ref_signal)]', total_unc_5, LineWidth=2);
+% hold
+% stairs([1:length(ref_signal)]', total_unc_z10, LineWidth=2);
+% stairs([1:length(ref_signal)]', total_unc_25, LineWidth=2);
+% stairs([1:length(ref_signal)]', total_unc_50, LineWidth=2)
+% stairs([1:length(ref_signal)]', total_unc_100, LineWidth=2)
+% xlim([1 length(ref_signal)])
+% xlabel("Time")
+% ylabel("Total uncertainty")
 % legend("z = 5", "z = 10", "z = 25", "z = 50", "z = 100")
 % saveas(gcf, "total_uncertainty.png")
 % 
