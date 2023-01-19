@@ -217,7 +217,7 @@ function value = ARTEO_Objective_function(x, ref, gprMdlLP_machine1, gprMdlLP_ma
     [mean_machine1, sigma_machine1,interval_machine1] = predict(gprMdlLP_machine1,x(1)); 
     [mean_machine2, sigma_machine2,interval_machine2] = predict(gprMdlLP_machine2,x(2));
     if exp == true
-        z=100;
+        z=25;
     else
         z=0;
     end

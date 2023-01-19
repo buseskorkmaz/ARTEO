@@ -109,45 +109,45 @@ end
 % % yyaxis left;
 % stairs([1:length(ref_signal)]', ref_signal,LineWidth=2, Color="k");
 % hold
-% stairs([1:length(ref_signal)]', prev_current_one_z25(3:end) + prev_current_two_z25(3:end), "--",LineWidth=2, Color = "#ff748c")
-% stairs([1:length(ref_signal)]', prev_current_one_z50(3:end) + prev_current_two_z50(3:end), ":", LineWidth=2, Color = "#008866" )
+% stairs([1:length(ref_signal)]', prev_current_one(3:end) + prev_current_two(3:end),LineWidth=2, Color = "#ff748c")
+% % stairs([1:length(ref_signal)]', prev_current_one_z50(3:end) + prev_current_two_z50(3:end), ":", LineWidth=2, Color = "#008866" )
 % yline(ilimit,'--', Color="#0000ff",LineWidth=1)
 % % yyaxis right;
-% stairs([1:length(ref_signal)]', predicted_two_z25,LineWidth=2, Color="b")
-% stairs([1:length(ref_signal)]', predicted_two_z50,"-", LineWidth=2,Color="#FFA500")
+% % stairs([1:length(ref_signal)]', predicted_two_z25,LineWidth=2, Color="b")
+% % stairs([1:length(ref_signal)]', predicted_two_z50,"-", LineWidth=2,Color="#FFA500")
 % xlim([1 length(ref_signal)])
 % xlabel("Time")
 % ylabel("Current")
-% legend("Reference current", "Total produced current (z = 25)", "Total produced current (z = 50)", "Maximum safe current", "Machine-2 current (z = 25)", "Machine-2 current (z = 50)")
+% % legend("Reference current", "Total produced current (z = 25)", "Total produced current (z = 50)", "Maximum safe current", "Machine-2 current (z = 25)", "Machine-2 current (z = 50)")
 % legend("Reference current", "Total produced current", "Maximum safe current")
-% saveas(gcf, "ref_vs_opt.png")
+% % saveas(gcf, "ref_vs_opt.png")
 
-figure;
-set(0,'DefaultLineLineWidth',2)
-stairs([1:length(ref_signal)]', predicted_one+predicted_two, Color="#00ffff", LineWidth=2);
-hold
-stairs([1:length(ref_signal)]', prev_current_one(3:end)+prev_current_two(3:end), "--",LineWidth=2)
-% stairs([1:length(ref_signal)]', prev_current_one(3:end),LineWidth=2)
-% stairs([1:length(ref_signal)]', prev_current_two(3:end),LineWidth=2)
-yline(ilimit,'--', Color="#0000ff",LineWidth=1)
-xlim([1 length(ref_signal)])
-legend("Predicted", "Real", "Max")
-% saveas(gcf, "pred_vs_real.png")
+% figure;
+% set(0,'DefaultLineLineWidth',2)
+% stairs([1:length(ref_signal)]', predicted_one+predicted_two, Color="#00ffff", LineWidth=2);
+% hold
+% stairs([1:length(ref_signal)]', prev_current_one(3:end)+prev_current_two(3:end), "--",LineWidth=2)
+% % stairs([1:length(ref_signal)]', prev_current_one(3:end),LineWidth=2)
+% % stairs([1:length(ref_signal)]', prev_current_two(3:end),LineWidth=2)
+% yline(ilimit,'--', Color="#0000ff",LineWidth=1)
+% xlim([1 length(ref_signal)])
+% legend("Predicted", "Real", "Max")
+% % saveas(gcf, "pred_vs_real.png")
 
 % regret comparison
-figure;
-set(0,'DefaultLineLineWidth',2)
-plot([1:25]', normalize(avg_regret_one_z0(1:25)), LineWidth=2);
-hold
-plot([1:25]', normalize(avg_regret_one_z10(1:25)),  LineWidth=2)
-% stairs([1:length(ref_signal)]', avg_regret_one_z25,  LineWidth=2)
-plot([1:25]', normalize(avg_regret_one_z25(1:25)),  LineWidth=2)
-% stairs([1:length(ref_signal)]', avg_regret_one_z50,  LineWidth=2)
-plot([1:25]', normalize(avg_regret_one_z50(1:25)),  LineWidth=2)
-% stairs([1:length(ref_signal)]', avg_regret_one_z100,  LineWidth=2)
-plot([1:25]', avg_regret_one_z100(1:25),  LineWidth=2)
-xlim([1 25])
-legend("Machine2-regret (z=0)","Machine2-regret (z=10)", "Machine2-regret (z=25)", "Machine2-regret (z=50)", "Machine2-regret (z=100)")
+% figure;
+% set(0,'DefaultLineLineWidth',2)
+% plot([1:25]', normalize(avg_regret_one_z0(1:25)), LineWidth=2);
+% hold
+% plot([1:25]', normalize(avg_regret_one_z10(1:25)),  LineWidth=2)
+% % stairs([1:length(ref_signal)]', avg_regret_one_z25,  LineWidth=2)
+% plot([1:25]', normalize(avg_regret_one_z25(1:25)),  LineWidth=2)
+% % stairs([1:length(ref_signal)]', avg_regret_one_z50,  LineWidth=2)
+% plot([1:25]', normalize(avg_regret_one_z50(1:25)),  LineWidth=2)
+% % stairs([1:length(ref_signal)]', avg_regret_one_z100,  LineWidth=2)
+% plot([1:25]', avg_regret_one_z100(1:25),  LineWidth=2)
+% xlim([1 25])
+% legend("Machine2-regret (z=0)","Machine2-regret (z=10)", "Machine2-regret (z=25)", "Machine2-regret (z=50)", "Machine2-regret (z=100)")
 
 
 % total unc comparison
