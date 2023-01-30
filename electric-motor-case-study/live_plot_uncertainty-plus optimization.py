@@ -62,7 +62,7 @@ def plot_live_gp(i):
         ax.set_ylim(0,250)
         ax.set_xlabel("Torque")
         ax.set_ylabel("Current") 
-        lgnd = ax.legend(prop={'size': 6})
+        lgnd = ax.legend(prop={'size': 8.5})
         lgnd.legendHandles[3]._sizes = [30]
 
         ax1.set_title("Machine-2")
@@ -91,7 +91,7 @@ def plot_live_gp(i):
         ax2.set_ylim(0,280)
         ax2.set_ylabel('Reference current')
         ax2.set_xlabel('Time')   
-        ax2.legend()
+        ax2.legend(fontsize="medium")
 
         # lines_labels = [ax.get_legend_handles_labels() for ax in fig.axes]
         # lines, labels = [sum(lol, []) for lol in zip(*lines_labels)]
